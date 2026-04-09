@@ -10,7 +10,7 @@ targeting at Aquila Basket Trento.  Produces both evaluation metrics
 ## Quick Start
 
 ```bash
-cd thesis_clean_pipeline
+cd AnnaPiccoli_capstone_project
 
 # install dependencies (inside your conda/venv)
 pip install -r requirements.txt

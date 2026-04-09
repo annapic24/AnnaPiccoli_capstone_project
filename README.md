@@ -1,4 +1,4 @@
-# Thesis Clean Pipeline – Leakage-Free Clustering & Targeting
+# Thesis Pipeline – Leakage-Free Clustering & Targeting
 
 Automated pipeline that validates fan-level clustering for ticket-purchase
 targeting at Aquila Basket Trento.  Produces both evaluation metrics

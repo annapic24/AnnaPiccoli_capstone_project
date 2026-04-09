@@ -54,8 +54,8 @@ All artefacts land in `runs/run_<timestamp>/`.
 | `--umap_components` | 10 | UMAP output dimensions |
 | `--umap_neighbors` | 15 | UMAP n_neighbors parameter |
 | `--umap_min_dist` | 0.0 | UMAP min_dist parameter |
-| `--hdbscan_min_cluster` | 100 | HDBSCAN min_cluster_size |
-| `--hdbscan_min_samples` | 10 | HDBSCAN min_samples |
+| `--hdbscan_min_cluster` | 50 | HDBSCAN min_cluster_size |
+| `--hdbscan_min_samples` | 5 | HDBSCAN min_samples |
 | `--use_pca` | False | Use PCA instead of UMAP (faster, deterministic) |
 | `--require_consent` | True | Only target fans with `marketing_consent == 1` |
 | `--no_require_consent` | — | Override: allow targeting without consent |
@@ -100,7 +100,7 @@ Chronological split  (split.py)
   │
   ▼  (TRAIN only from here)
 Build fan features  (feature_building.py)
-  │  ↳ ~67 features: attendance, recency, price sensitivity, timing,
+  │  ↳ features: attendance, recency, price sensitivity, timing,
   │    competition preferences, opponent affinity, seating, churn risk
   ▼
 Impute → Scale → UMAP/PCA  (representation.py)
@@ -146,19 +146,8 @@ For each **test game** *g*:
 | `cluster_x_freq` | Multiplicative: `p_c_norm × freq_norm` |
 | `freq_boost_cluster` | Additive: `0.3 × p_c_norm + 0.7 × freq_norm` (avoids zero-out) |
 | `comp_propensity` | Competition-aware propensity `P(buy | cluster, LBA/Eurocup)` |
-| `weighted_hybrid` | 5-component weighted score (freq 55%, recency 20%, price 10%, comp 10%, cluster 5%) — weights found by leave-one-out grid search on TRAIN games |
+| `weighted_hybrid` | 5-component weighted score (freq 45%, recency 25%, price 15%, comp 10%, cluster 5%) — weights found by leave-one-out grid search on TRAIN games |
 | `supervised_lr` | Logistic regression on per-game binary labels; features: cluster one-hot + games_attended + recency + is_weekend + is_lba |
-
-### Best results (test_frac=0.30, 14 train / 7 test games)
-
-| Method | Precision@200 | Lift@200 |
-|--------|:---:|:---:|
-| weighted_hybrid | 0.70 | 6.7× |
-| supervised_lr | 0.71 | 6.8× |
-| frequency | 0.70 | 6.7× |
-| random | 0.04 | 0.35× |
-
----
 
 ## GDPR Consent & Marketing Packages
 
@@ -236,7 +225,7 @@ thesis_clean_pipeline/
 │   ├── schema.py             # Italian column name discovery & normalisation
 │   ├── io.py                 # CSV reading, cleaning, identity (HMAC-SHA256)
 │   ├── split.py              # chronological game split (no leakage)
-│   ├── feature_building.py   # fan-level feature aggregation (~67 features)
+│   ├── feature_building.py   # fan-level feature aggregation
 │   ├── representation.py     # impute → scale → UMAP/PCA
 │   ├── clustering.py         # HDBSCAN fit/predict + Bayesian propensity
 │   ├── evaluation.py         # Precision@K, Lift@K (cluster method)

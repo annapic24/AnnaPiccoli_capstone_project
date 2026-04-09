@@ -1,0 +1,54 @@
+# Default configuration for the clustering validation pipeline.
+# These values can be overridden by CLI arguments.
+
+# ── data ──
+# raw_csv: "path/to/export.csv"       # set via CLI
+# opponents_csv: "path/to/opponents.csv"
+
+# ── split ──
+test_frac: 0.30
+
+# ── evaluation ──
+k_list: [200, 500, 1000]
+random_seed: 42
+
+# ── UMAP ──
+umap_components: 10
+umap_neighbors: 15
+umap_min_dist: 0.0
+
+# ── HDBSCAN ──
+hdbscan_min_cluster: 50
+hdbscan_min_samples: 5
+
+# ── fallback ──
+# Set to true to use PCA instead of UMAP (faster, always supports transform)
+use_pca: false
+
+# ── marketing consent ──
+# Path to the marketing consent master CSV (aquila_basket_10103810.csv)
+# consent_csv: "path/to/aquila_basket_10103810.csv"   # set via CLI
+# Require marketing_consent==1 to be targetable (GDPR compliance)
+require_consent: true
+# Require a valid email to be targetable
+require_email: true
+
+# ── game packages ──
+# Set to true to skip per-game marketing package generation
+skip_packages: false
+# Limit per-game target lists to top N fans (null = no limit)
+target_top_n: null
+# Set to true to export bought_already CSVs per game (default false)
+export_bought_already: false
+
+# ── future fixtures ──
+# Generate packages for future (unplayed) games from opponents schedule
+include_future_games: false
+# Max number of future fixtures (null = all)
+future_n: null
+# Only fixtures after this date (null = max event_dt in ticket data)
+# future_from_date: "2026-02-10"
+# Filter by competition type (null = all)
+# future_only_competitions: ["Serie A"]
+# Filter by opponent name (null = all, substring match)
+# future_only_opponents: ["Sassari"]
